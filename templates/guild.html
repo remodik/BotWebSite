@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки сервера</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5865F2;
+            --primary-dark: #4752C4;
+            --secondary: #2C2F33;
+            --dark: #23272A;
+            --light: #F6F6F6;
+            --success: #57F287;
+            --danger: #ED4245;
+            --warning: #FEE75C;
+            --text: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--secondary);
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .settings-card {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-title {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 2px solid var(--dark);
+            background-color: var(--dark);
+            color: var(--light);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background-color: rgba(87, 242, 135, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>Bot Dashboard</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="/dashboard"><i class="fas fa-arrow-left"></i> Назад к серверам</a>
+                    <a href="/"><i class="fas fa-home"></i> Главная</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="settings-card">
+            <h2>Настройки сервера</h2>
+
+            {% if request.query_params.get('success') %}
+            <div class="alert alert-success">
+                Настройки успешно обновлены!
+            </div>
+            {% endif %}
+
+            {% if request.query_params.get('no_changes') %}
+            <div class="alert alert-info">
+                Изменений не внесено.
+            </div>
+            {% endif %}
+
+            <!-- Вкладки -->
+            <nav class="tabs">
+                <button class="tab-button active" data-tab="general">Основное</button>
+                <button class="tab-button" data-tab="moderation">Модерация</button>
+            </nav>
+
+            <!-- Контент вкладок -->
+            <div class="tab-content" id="general">
+                <form method="post" action="/guild/{{ guild_id }}/prefix">
+                    <div class="form-group">
+                        <label for="prefix">Префикс команд:</label>
+                        <input type="text" id="prefix" name="prefix" value="{{ current_prefix }}" required>
+                        <small>Символ(ы), которые используются перед командами (например: !, /, .)</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="moderation" style="display: none;">
+                <form action="/guild/{{ guild_id }}/settings" method="POST">
+                    <h3>Настройки каналов</h3>
+                    <div class="form-group">
+                        <label for="mod_channel_id">Канал для логов модерации:</label>
+                        <select name="mod_channel_id" id="mod_channel_id" data-current="{{ settings.mod_channel_id | default('') }}">
+                            <option value="">Не выбран</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="system_channel_id">Системный канал для уведомлений:</label>
+                        <select name="system_channel_id" id="system_channel_id" data-current="{{ settings.system_channel_id | default('') }}">
+                            <option value="">Не выбран</option>
+                        </select>
+                    </div>
+
+                    <h3>Управление персоналом</h3>
+                    <div class="form-group">
+                        <label for="admin_ids">ID администраторов (через запятую):</label>
+                        <input type="text" name="admin_ids" id="admin_ids" placeholder="123456789,987654321" value="{{ settings.administrators | join(',') if settings.administrators else '' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="mod_ids">ID модераторов (через запятую):</label>
+                        <input type="text" name="mod_ids" id="mod_ids" placeholder="123456789,987654321" value="{{ settings.moderators | join(',') if settings.moderators else '' }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Переключение вкладок
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Удалить активный класс у всех кнопок
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                // Скрыть весь контент вкладок
+                document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+                // Активировать текущую кнопку и показать контент
+                button.classList.add('active');
+                document.getElementById(button.dataset.tab).style.display = 'block';
+            });
+        });
+
+        // Загрузка каналов для формы модерации
+        async function loadChannels() {
+            try {
+                const response = await fetch(`/guild/{{ guild_id }}/channels`, { credentials: 'include' });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const modSelect = document.getElementById('mod_channel_id');
+                const sysSelect = document.getElementById('system_channel_id');
+
+                data.channels.forEach(channel => {
+                    const option = document.createElement('option');
+                    option.value = channel.id;
+                    option.text = `#${channel.name}`;
+                    modSelect.appendChild(option.cloneNode(true));
+                    sysSelect.appendChild(option);
+                });
+
+                if (modSelect.dataset.current) {
+                    modSelect.value = modSelect.dataset.current;
+                }
+                if (sysSelect.dataset.current) {
+                    sysSelect.value = sysSelect.dataset.current;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки каналов:', error);
+                alert('Не удалось загрузить каналы сервера. Проверьте права или авторизацию.');
+            }
+        }
+
+        window.onload = () => {
+            loadChannels();
+        };
+    </script>
+</body>
+</html>

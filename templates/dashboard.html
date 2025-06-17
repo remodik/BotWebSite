@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление серверами</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5865F2;
+            --primary-dark: #4752C4;
+            --secondary: #2C2F33;
+            --dark: #23272A;
+            --light: #F6F6F6;
+            --success: #57F287;
+            --danger: #ED4245;
+            --warning: #FEE75C;
+            --text: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--secondary);
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            font-size: 32px;
+        }
+
+        .section-title {
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guild-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .guild-card {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        .guild-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .guild-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .guild-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: var(--light);
+        }
+
+        .guild-icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .guild-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .guild-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: var(--dark);
+        }
+
+        .btn-success:hover {
+            background-color: #46d375;
+        }
+
+        .no-guilds {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            grid-column: 1 / -1;
+        }
+
+        .no-guilds i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .guild-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>remod3Bot</span>
+                </div>
+
+                <div class="user-info">
+                    {% if user.avatar %}
+                    <img class="user-avatar" src="https://cdn.discordapp.com/avatars/{{ user.id }}/{{ user.avatar }}.png" alt="{{ user.username }}">
+                    {% else %}
+                    <div class="user-avatar"></div>
+                    {% endif %}
+                    <span>{{ user.username }}</span>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="/"><i class="fas fa-home"></i> Главная</a>
+                    <a href="/stats"><i class="fas fa-chart-bar"></i> Статистика</a>
+                    <a href="/logout"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Ваши серверы</h1>
+
+        {% if managed_guilds %}
+        <h2 class="section-title"><i class="fas fa-server"></i> Бот есть:</h2>
+        <div class="guild-container">
+            {% for guild in managed_guilds %}
+            <div class="guild-card">
+                <div class="guild-header">
+                    {% if guild.icon %}
+                    <div class="guild-icon">
+                        <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}">
+                    </div>
+                    {% else %}
+                    <div class="guild-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    {% endif %}
+                    <div class="guild-name">{{ guild.name }}</div>
+                </div>
+                <div class="guild-actions">
+                    <a href="/guild/{{ guild.id }}" class="btn btn-primary">
+                        <i class="fas fa-cog"></i> Настроить
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if unmanaged_guilds %}
+        <h2 class="section-title"><i class="fas fa-plus-circle"></i> Добавить бота:</h2>
+        <div class="guild-container">
+            {% for guild in unmanaged_guilds %}
+            <div class="guild-card">
+                <div class="guild-header">
+                    {% if guild.icon %}
+                    <div class="guild-icon">
+                        <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}">
+                    </div>
+                    {% else %}
+                    <div class="guild-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    {% endif %}
+                    <div class="guild-name">{{ guild.name }}</div>
+                </div>
+                <div class="guild-actions">
+                    <a href="https://discord.com/oauth2/authorize?client_id={{ client_id }}&permissions=8&scope=bot"
+                       target="_blank" class="btn btn-success">
+                        <i class="fas fa-user-plus"></i> Пригласить
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if not managed_guilds and not unmanaged_guilds %}
+        <div class="no-guilds">
+            <i class="fas fa-exclamation-circle"></i>
+            <h2>У вас нет серверов, где вы администратор</h2>
+            <p>Добавьте бота на сервер, где у вас есть права администратора</p>
+        </div>
+        {% endif %}
+    </main>
+</body>
+</html>

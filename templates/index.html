@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Bot Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>remod3Bot - Discord Bot Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #5865F2;
             --primary-dark: #4752C4;
+            --primary-light: #7289DA;
             --secondary: #2C2F33;
-            --dark: #23272A;
-            --light: #F6F6F6;
-            --success: #57F287;
-            --danger: #ED4245;
-            --warning: #FEE75C;
-            --text: #333333;
+            --dark: #1E2124;
+            --darker: #16191C;
+            --light: #FFFFFF;
+            --text-light: #B9BBBE;
+            --success: #43B581;
+            --danger: #F04747;
+            --warning: #FAA61A;
+            --info: #00AFF4;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #43B581 0%, #11998e 100%);
+            --shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.4);
         }
 
         * {
@@ -26,227 +34,502 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--dark);
+            background: var(--dark);
             color: var(--light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
+        /* Header */
+        .header {
+            background: var(--darker);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .header-container {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        .container p {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        header {
-            background-color: var(--secondary);
-            padding: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--light);
             display: flex;
             align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo i {
-            margin-right: 10px;
-            color: var(--primary);
+            font-size: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
-            color: var(--light);
+            color: var(--text-light);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s;
         }
 
         .nav-links a:hover {
-            color: var(--primary);
+            color: var(--light);
         }
 
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
         .hero {
-            flex: 1;
+            min-height: calc(100vh - 80px);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.1;
+            top: -200px;
+            right: -200px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--success);
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+            bottom: -150px;
+            left: -150px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
             text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            z-index: 1;
+            padding: 2rem;
         }
 
         .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--primary), var(--success));
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 0.8s ease-out;
         }
 
-        .hero p {
-            font-size: 18px;
-            max-width: 600px;
-            margin-bottom: 30px;
-            line-height: 1.6;
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInUp 0.8s ease-out;
         }
 
-        .login-btn {
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
             display: inline-flex;
             align-items: center;
-            padding: 12px 24px;
-            background-color: var(--primary);
-            color: white;
+            gap: 12px;
+            padding: 1rem 2.5rem;
+            background: var(--gradient-primary);
+            color: var(--light);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 50px;
             font-weight: 600;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+            animation: slideInUp 1s ease-out;
         }
 
-        .login-btn i {
-            margin-right: 10px;
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
         }
 
-        .login-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
+        .cta-button i {
+            font-size: 1.5rem;
         }
 
+        /* Features Section */
         .features {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 60px 0;
-            flex-wrap: wrap;
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
         }
 
         .feature-card {
-            background-color: var(--secondary);
-            border-radius: 10px;
-            padding: 30px;
-            width: 280px;
-            text-align: center;
-            transition: transform 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: var(--secondary);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
         }
 
         .feature-card:hover {
             transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
         }
 
-        .feature-card i {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: var(--primary);
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .feature-card h3 {
-            font-size: 20px;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
         }
 
-        footer {
-            background-color: var(--secondary);
-            padding: 20px 0;
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 6rem 2rem;
+            background: var(--darker);
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 20px;
             text-align: center;
-            margin-top: auto;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
         }
 
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 2px solid var(--primary);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
+            .hero h1 {
+                font-size: 2.5rem;
             }
 
-            .hero h1 {
-                font-size: 36px;
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
             }
         }
     </style>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-robot"></i>
-                    <span>Панель управления</span>
-                </div>
-                <nav class="nav-links">
-                    <a href="/">Главная</a>
-                    <a href="/stats">Статистика</a>
-                </nav>
-            </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <i class="fas fa-robot"></i>
+                <span>remod3Bot</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/stats">Статистика</a>
+                <a href="#features">Возможности</a>
+            </nav>
         </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Управляйте своим Discord ботом</h1>
-                <p>Простой и удобный веб-интерфейс для настройки префиксов команд на ваших серверах Discord</p>
-                <a href="/login" class="login-btn">
-                    <i class="fab fa-discord"></i>
-                    Войти через Discord
-                </a>
-            </div>
-        </section>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Управляйте Discord ботом</h1>
+            <p class="subtitle">Мощная панель управления с интуитивным интерфейсом для настройки вашего Discord бота. Управление префиксами, модерацией и многим другим в одном месте.</p>
+            <a href="/login" class="cta-button">
+                <i class="fab fa-discord"></i>
+                Войти через Discord
+            </a>
+        </div>
+    </section>
 
-        <section class="features">
-            <div class="feature-card">
-                <i class="fas fa-sliders-h"></i>
-                <h3>Управление префиксами</h3>
-                <p>Настраивайте префиксы команд для каждого сервера индивидуально</p>
-            </div>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="features-container">
+            <h2 class="section-title">Возможности</h2>
+            <p class="section-subtitle">Всё необходимое для управления вашим Discord сервером</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Управление префиксами</h3>
+                    <p>Настраивайте уникальные префиксы команд для каждого сервера. Гибкая система позволяет использовать любые символы.</p>
+                </div>
 
-            <div class="feature-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Безопасный доступ</h3>
-                <p>Доступ только для администраторов серверов</p>
-            </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Модерация</h3>
+                    <p>Управление администраторами и модераторами. Настройка каналов для логов и системных уведомлений.</p>
+                </div>
 
-            <div class="feature-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Мгновенные изменения</h3>
-                <p>Настройки применяются сразу без перезагрузки бота</p>
-            </div>
-        </section>
-    </main>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Панель управления</h3>
+                    <p>Интуитивный веб-интерфейс для быстрого доступа ко всем настройкам. Удобная навигация и современный дизайн.</p>
+                </div>
 
-    <footer>
-        <div class="container">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Мгновенные изменения</h3>
+                    <p>Все настройки применяются моментально без необходимости перезапуска бота. Изменения видны сразу.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Безопасность</h3>
+                    <p>Доступ только для администраторов серверов через OAuth2 аутентификацию Discord.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Статистика</h3>
+                    <p>Отслеживайте активность и статистику использования бота в реальном времени.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <h2 class="section-title">Наша статистика</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Серверов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Пользователей</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
             <p>&copy; 2025 remod3Bot. Все права защищены.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
         </div>
     </footer>
 </body>

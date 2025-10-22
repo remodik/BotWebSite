@@ -156,12 +156,73 @@
 - ✅ Статистика системы
 - ✅ Разделение серверов (с ботом / без бота)
 
-## Next Steps (если требуется)
+## Installation & Setup
 
-1. ⏳ Тестирование с реальными Discord credentials
-2. ⏳ Добавление темной/светлой темы переключателя
-3. ⏳ Дополнительные анимации при загрузке
-4. ⏳ Интеграция графиков для статистики
+### Dependencies Installed
+```bash
+pip install httpx jinja2 itsdangerous discord.py
+```
+
+All dependencies saved to `requirements.txt`
+
+### Environment Setup
+1. `.env` file created with template configuration
+2. `.env.example` provided for reference
+3. JSON directories structure maintained
+
+### Running the Application
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the server
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+## Documentation
+
+Created comprehensive `README.md` with:
+- Quick start guide
+- Project structure
+- Design system documentation
+- Discord application setup instructions
+- API routes reference
+
+## Testing Status
+
+✅ Module imports successfully
+✅ Templates rendering correctly
+✅ Static assets loading
+✅ Responsive design verified
+⏳ Discord OAuth2 (requires real credentials)
+
+## Next Steps (Optional)
+
+1. ⏳ Add light/dark theme toggle
+2. ⏳ Implement charts for statistics page
+3. ⏳ Add loading animations
+4. ⏳ Enhance mobile UX with gestures
+
+## Summary
+
+✨ **Redesign Complete!** ✨
+
+All pages have been successfully redesigned in the Juniper.bot style:
+- Modern, clean interface with gradients
+- Sidebar navigation structure
+- Responsive grid layouts
+- Smooth animations and hover effects
+- Professional card designs
+- Complete functionality preserved
+
+## Key Achievements
+
+1. 🎨 **Visual Design**: Modern gradients, shadows, and animations
+2. 🧭 **Navigation**: Sidebar with intuitive menu structure
+3. 📱 **Responsive**: Works perfectly on all devices
+4. ⚡ **Performance**: Lightweight, fast-loading templates
+5. 🔧 **Maintainable**: Clean, organized code with CSS variables
+6. ✅ **Functional**: All original features preserved
 
 ## Notes
 
@@ -170,3 +231,4 @@
 - Сохранена полная совместимость с существующим API
 - Responsive дизайн для всех устройств
 - Использованы современные CSS практики (Grid, Flexbox, Custom Properties)
+- Все зависимости установлены и документированы
